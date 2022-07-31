@@ -11,48 +11,48 @@ As such, moving to TF.JS helped standardise our code base substantially and redu
 ## [Sample Code](samples/index.js)
 
 ~~~javascript
-	const KMeans = require("tf-kmeans");
-	const tf = require("@tensorflow/tfjs");
-	const kmeans = new KMeans.default({
-		k: 2,
-		maxIter: 30,
-		distanceFunction: KMeans.default.EuclideanDistance
-	});
-	const dataset = tf.tensor([[2, 2, 2], [5, 5, 5], [3, 3, 3], [4, 4, 4], [7, 8, 7]]);
-	const predictions = kmeans.Train(
-		dataset
-	);
+ const KMeans = require("tf-kmeans");
+ const tf = require("@tensorflow/tfjs");
+ const kmeans = new KMeans.default({
+  k: 2,
+  maxIter: 30,
+  distanceFunction: KMeans.default.EuclideanDistance
+ });
+ const dataset = tf.tensor([[2, 2, 2], [5, 5, 5], [3, 3, 3], [4, 4, 4], [7, 8, 7]]);
+ const predictions = kmeans.Train(
+  dataset
+ );
 
-	console.log("Assigned To ", predictions.arraySync());
-	console.log("Centroids Used are ", kmeans.Centroids().arraySync());
-	console.log("Prediction for Given Value is");
-	kmeans.Predict(tf.tensor([2, 3, 2])).print();
+ console.log("Assigned To ", predictions.arraySync());
+ console.log("Centroids Used are ", kmeans.Centroids().arraySync());
+ console.log("Prediction for Given Value is");
+ kmeans.Predict(tf.tensor([2, 3, 2])).print();
 ~~~
 
 You can use the Asynchronous TrainAsync if you want to use an asynchronous callback function
 
 ~~~javascript
-	const kmeans = new KMeans.default({
-		k: 3,
-		maxIter: 30,
-		distanceFunction: KMeans.default.EuclideanDistance
-	});
-	const dataset = tf.tensor([[2, 2, 2], [5, 5, 5], [3, 3, 3], [4, 4, 4], [7, 8, 7]]);
+ const kmeans = new KMeans.default({
+  k: 3,
+  maxIter: 30,
+  distanceFunction: KMeans.default.EuclideanDistance
+ });
+ const dataset = tf.tensor([[2, 2, 2], [5, 5, 5], [3, 3, 3], [4, 4, 4], [7, 8, 7]]);
 
-	console.log("\n\nAsync Test");
-	const predictions = await kmeans.TrainAsync(
-		dataset,
-		// Called At End of Every Iteration
-		// This function is Asynchronous
-		async(iter, centroid, preds)=>{
-			console.log("===");
-			console.log("Iteration Count", iter);
-			console.log("Centroid ", await centroid.array());
-			console.log("Prediction ", await preds.array());
-			console.log("===");
-			// You could instead use TFVIS for Plotting Here
-		}
-	);
+ console.log("\n\nAsync Test");
+ const predictions = await kmeans.TrainAsync(
+  dataset,
+  // Called At End of Every Iteration
+  // This function is Asynchronous
+  async(iter, centroid, preds)=>{
+   console.log("===");
+   console.log("Iteration Count", iter);
+   console.log("Centroid ", await centroid.array());
+   console.log("Prediction ", await preds.array());
+   console.log("===");
+   // You could instead use TFVIS for Plotting Here
+  }
+ );
 ~~~
 
 ## Functions
@@ -63,38 +63,41 @@ You can use the Asynchronous TrainAsync if you want to use an asynchronous callb
     1. k:-                Number of Clusters
     2. maxIter:-          Max Iterations
     3. distanceFunction:- The Distance function Used
-	                      Currently only Eucledian Distance Provided
+                       Currently only Eucledian Distance Provided
 
-2. ***`Train`***
-
-    Takes Dataset as Parameter
-
-	Performs Training on This Dataset
-
-	Sync callback function is _optional_
-
-3. ***`TrainAsync`***
+2. ***`train`***
 
     Takes Dataset as Parameter
 
-	Performs Training on This Dataset
+ Performs Training on This Dataset
 
-	Also takes _async_ callback function called at the end of every iteration
+ Sync callback function is *optional*
 
-4. ***`Centroids`***
+3. ***`trainAsync`***
 
-	Returns the Centroids found for the dataset on which KMeans was Trained
+    Takes Dataset as Parameter
 
-5. ***`Predict`***
+ Performs Training on This Dataset
 
-	Performs Predictions on the data Provided as Input
+ Also takes *async* callback function called at the end of every iteration
 
+5. ***`predict`***
+
+ Performs Predictions on the data Provided as Input
+
+6. ***`save`***
+
+Save trained k-means to a json file. Pls give a '/path/to/xxx.json' into it.
 ## PEER DEPENDENCIES
+
 1. [TensorFlow.JS](https://www.tensorflow.org/js "tfjs")
 
 ## Typings
+
 As the code is originally written in TypeScript, Type Support is provided out of the box
 
 ## Contact Me
+
 You could contact me [via LinkedIn](https://www.linkedin.com/in/pratik-chowdhury-889bb2183/ "via LinkedIn")
 You could file issues or add features via Pull Requests on GitHub
+

@@ -108,3 +108,5 @@ dist
 
 .dist/
 package-lock.json
+yarn.lock
+/samples/kmeans.json
