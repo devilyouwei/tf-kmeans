@@ -1,37 +1,19 @@
 {
-    "name": "tf-kmeans-node",
-    "version": "0.1.0",
-    "description": "A Library for Calculating K-Means using Tensorflow, add save model function, only on nodejs",
-    "keywords": [
-        "kmeans",
-        "clustering",
-        "tensorflow",
-        "ML",
-        "Machine-Learning",
-        "MachineLearning",
-        "tf",
-        "tfjs"
-    ],
-    "main": "dist/index.js",
-    "types": "dist/index.d.ts",
+    "name": "tf-kmeans",
+    "version": "1.0.0",
+    "description": "TF-KMeans, use tensorflow to cluster data, for browser, nodejs, nodejs-gpu",
+    "main": "index.js",
     "scripts": {
-        "build": "tsc"
+        "start": "node index.js"
     },
-    "author": "Youwei Huang, Pratik Chowdhury",
+    "author": "devilyouwei, Pratik Chowdhury (https://github.com/pratikpc/)",
     "license": "MIT",
-    "repository": {
-        "type": "git",
-        "url": "git+https://github.com/devilyouwei/tf-kmeans.git"
-    },
-    "bugs": {
-        "url": "https://github.com/devilyouwei/tf-kmeans/issues"
-    },
-    "homepage": "https://github.com/devilyouwei/tf-kmeans#readme",
-    "devDependencies": {
-        "@tensorflow/tfjs-node": "^3.19.0",
-        "typescript": "^4.7.4"
-    },
-    "peerDependencies": {
-        "@tensorflow/tfjs-node": "^3.19.0"
+    "dependencies": {
+        "@tensorflow/tfjs": "latest",
+        "@tensorflow/tfjs-node": "latest",
+        "@tensorflow/tfjs-node-gpu": "latest",
+        "tf-kmeans": "./tf-kmeans/",
+        "tf-kmeans-node": "./tf-kmeans-node/",
+        "tf-kmeans-node-gpu": "./tf-kmeans-node-gpu/"
     }
 }
