@@ -7,7 +7,7 @@ function test() {
   tf.tidy(() => {
     const kmeans = new KMeans({
       k: 3,
-      maxIter: 10,
+      maxIter: 50,
     })
     console.log(kmeans)
     const dataset = tf.tensor([
@@ -43,10 +43,24 @@ function testLoad() {
   const kmeans = new KMeans(model)
   console.log('Load Predict:')
   console.log('Category index:')
-  kmeans.predict(tf.tensor([2, 3, 2])).index.print()
+  kmeans
+    .predict(
+      tf.tensor([
+        [2, 3, 2],
+        [1, 1, 1],
+      ]),
+    )
+    .index.print()
   kmeans.predict(tf.tensor([5, 5, 4])).index.print()
   console.log('Category confidence:')
-  kmeans.predict(tf.tensor([2, 3, 2])).confidence.print()
+  kmeans
+    .predict(
+      tf.tensor([
+        [2, 3, 2],
+        [1, 1, 1],
+      ]),
+    )
+    .confidence.print()
   kmeans.predict(tf.tensor([5, 5, 4])).confidence.print()
 }
 

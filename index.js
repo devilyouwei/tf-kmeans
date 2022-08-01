@@ -4,27 +4,42 @@ const tf = require('@tensorflow/tfjs')
 function testCosineCluster() {
   tf.tidy(() => {
     const kmeans = new KMeans({
-      k: 2,
-      maxIter: 30,
+      k: 3,
+      maxIter: 10,
       distanceFunction: KMeans.cosineDistance,
     })
-    console.log(kmeans)
-    const dataset = tf.tensor([
-      [0.02, 0.033, 0.1],
-      [0.1, 0.2, 0.1],
-      [0.1, 0.2, 0.1],
+    const data1 = [
+      [1, 23, 3],
+      [1, 23, 3],
+      [4, 5, 2.1],
+      [2, 3, 1],
+      [4, 5, 2],
+      [4, 5, 2],
+      [4, 5, 2],
+      [4, 5, 2],
+      [4, 5, 2],
+      [4, 5, 2.1],
+      [4, 5, 2.1],
+      [4, 5, 2.1],
+      [4, 5, 2.1],
+    ]
+    const data2 = [
+      [-0.02, 0.033, 0.1],
+      [0.1, 0.033, 0.02],
+      [0.1, -0.2, 0.1],
       [0.3, 0.21, 0.21],
-      [0.06, 0.321, 0.22],
+      [-0.06, -0.321, 0.22],
       [0.1, 0.3, 0.22],
-      [0.00000001, 0.01, 0.0211],
-      [0.02, 0.009, 0.0211],
+      [-0.00000001, 0.01, 0.0211],
+      [0.02, -0.009, -0.0211],
       [0.02, 0.01, 0.0211],
-      [0.02, 0.01, 0.0211],
-      [0.02, 0.01, 0.02001],
-    ])
-    const predict = kmeans.train(dataset)
+      [0.02, 0.01, -0.0211],
+      [-0.02, -0.01, -0.02001],
+    ]
+    const dataset = tf.tensor(data2)
+    const train = kmeans.train(dataset)
 
-    console.log('Train Classify', predict.arraySync())
+    console.log('Train Classify', train.arraySync())
     console.log('Centers', kmeans.centroids.arraySync())
     console.log('Memory Used', tf.memory())
 
@@ -46,7 +61,7 @@ function testCosineCluster() {
 
     // dispose
     kmeans.dispose()
-    predict.dispose()
+    train.dispose()
     dataset.dispose()
   })
 }

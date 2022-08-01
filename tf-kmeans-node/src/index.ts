@@ -49,7 +49,8 @@ export default class KMeans {
       const magnitudeC = (dot.apply([centroids, centroids]) as Tensor).sqrt()
       const down = magnitudeV.mul(magnitudeC).reshape([k])
       const up = (dot.apply([values, centroids]) as Tensor).reshape([k])
-      return up.div(down)
+      const one = tf.fill([centroids.shape[0]], 1)
+      return one.sub(up.div(down))
     })
   }
 
@@ -94,8 +95,8 @@ export default class KMeans {
   }
   private assignCluster(value: tf.Tensor, centroids: tf.Tensor) {
     return tf.tidy(() => {
-      const confidences = this.distanceFunction(value, centroids)
-      return { minIndex: confidences.argMin(0), minValues: confidences.min(0) }
+      const distances = this.distanceFunction(value, centroids)
+      return { minIndex: distances.argMin(0), minValues: distances.min(0) }
     })
   }
   private assignClusters(values: tf.Tensor, centroids: tf.Tensor) {
