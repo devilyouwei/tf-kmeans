@@ -1,38 +1,38 @@
 {
-    "name": "tf-kmeans-browser",
-    "version": "0.9.0",
-    "description": "A Library for Calculating K-Means using Tensorflow, for browser",
-    "keywords": [
-        "kmeans",
-        "browser",
-        "clustering",
-        "tensorflow",
-        "ML",
-        "Machine-Learning",
-        "MachineLearning",
-        "tf",
-        "tfjs"
-    ],
-    "main": "dist/index.js",
-    "types": "dist/index.d.ts",
-    "scripts": {
-        "build": "tsc"
-    },
-    "author": "Youwei Huang, Pratik Chowdhury",
-    "license": "MIT",
-    "repository": {
-        "type": "git",
-        "url": "git+https://github.com/devilyouwei/tf-kmeans.git"
-    },
-    "bugs": {
-        "url": "https://github.com/devilyouwei/tf-kmeans/issues"
-    },
-    "homepage": "https://github.com/devilyouwei/tf-kmeans#readme",
-    "devDependencies": {
-        "@tensorflow/tfjs": "^3.19.0",
-        "typescript": "^4.7.4"
-    },
-    "peerDependencies": {
-        "@tensorflow/tfjs": "^3.19.0"
-    }
+  "name": "tf-kmeans-browser",
+  "version": "1.0.0",
+  "description": "A Library for Calculating K-Means using Tensorflow, for browser",
+  "keywords": [
+    "kmeans",
+    "browser",
+    "clustering",
+    "tensorflow",
+    "ML",
+    "Machine-Learning",
+    "MachineLearning",
+    "tf",
+    "tfjs"
+  ],
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc"
+  },
+  "author": "Youwei Huang, Pratik Chowdhury",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/devilyouwei/tf-kmeans.git"
+  },
+  "bugs": {
+    "url": "https://github.com/devilyouwei/tf-kmeans/issues"
+  },
+  "homepage": "https://github.com/devilyouwei/tf-kmeans#readme",
+  "devDependencies": {
+    "@tensorflow/tfjs": "^3.19.0",
+    "typescript": "^4.7.4"
+  },
+  "peerDependencies": {
+    "@tensorflow/tfjs": "^3.19.0"
+  }
 }
