@@ -174,7 +174,7 @@ As the code is originally written in TypeScript, Type Support is provided out of
 
 ## Contact Me
 
-You could contact me [devilyouwei]("https://github.com/devilyouwei/tf-kmeans")
+You could contact me [devilyouwei](https://github.com/devilyouwei/tf-kmeans)
 
 Thanks to [pratikpc](https://github.com/pratikpc/tf-kmeans)
 
