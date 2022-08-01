@@ -135,10 +135,10 @@ testLoad()
 1. ***`Constructor`***
 
     Takes 4 Optional parameters
-    1. k:-                Number of Clusters
-    2. maxIter:-          Max Iterations
-    3. distanceFunction:- The Distance function Used Currently: `euclideanDistance` and `cosineDistance`
-    4. centroids:-        Always when loading from a save json model, you don't need to train again.
+    - k:-                Number of Clusters
+    - maxIter:-          Max Iterations
+    - distanceFunction:- The Distance function Used Currently: `euclideanDistance` and `cosineDistance`
+    - centroids:-        Always when loading from a save json model, you don't need to train again.
 
 2. ***`train`***
 
@@ -175,5 +175,7 @@ As the code is originally written in TypeScript, Type Support is provided out of
 ## Contact Me
 
 You could contact me [devilyouwei]("https://github.com/devilyouwei/tf-kmeans")
+
 Thanks to [pratikpc](https://github.com/pratikpc/tf-kmeans)
+
 You could file issues or add features via Pull Requests on GitHub
