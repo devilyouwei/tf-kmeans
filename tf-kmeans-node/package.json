@@ -1,6 +1,6 @@
 {
   "name": "tf-kmeans-node",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "A Library for Calculating K-Means using Tensorflow, add save model function, for nodejs",
   "keywords": [
     "kmeans",

@@ -96,7 +96,11 @@ export default class KMeans {
   private assignCluster(value: tf.Tensor, centroids: tf.Tensor) {
     return tf.tidy(() => {
       const distances = this.distanceFunction(value, centroids)
-      return { minIndex: distances.argMin(0), minValues: distances.min(0) }
+      return {
+        minIndex: distances.argMin(0),
+        minValue: distances.min(0),
+        minCenter: centroids.gather(distances.argMin(0)),
+      }
     })
   }
   private assignClusters(values: tf.Tensor, centroids: tf.Tensor) {
@@ -104,14 +108,20 @@ export default class KMeans {
       const rows = values.shape[0]
       const minIndexes: tf.Tensor[] = []
       const minValues: tf.Tensor[] = []
+      const minCenters: tf.Tensor[] = []
       for (const index of this.generateIndices(rows)) {
         const value = values.gather(index)
         const cluster = this.assignCluster(value, centroids)
         minIndexes.push(cluster.minIndex)
-        minValues.push(cluster.minValues)
+        minValues.push(cluster.minValue)
+        minCenters.push(cluster.minCenter)
         value.dispose()
       }
-      return { index: tf.stack(minIndexes), confidence: tf.stack(minValues) }
+      return {
+        index: tf.stack(minIndexes),
+        distance: tf.stack(minValues),
+        center: tf.stack(minCenters),
+      }
     })
   }
   private randomSample(vals: tf.Tensor) {

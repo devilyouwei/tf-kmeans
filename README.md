@@ -12,6 +12,8 @@ As such, moving to TF.JS helped standardise our code base substantially and redu
 
 When you are using a browser at frontend!
 
+Example takes cosineDistance.
+
 ~~~javascript
 const KMeans = require('./tf-kmeans').default
 const tf = require('@tensorflow/tfjs')
@@ -19,27 +21,44 @@ const tf = require('@tensorflow/tfjs')
 function testCosineCluster() {
   tf.tidy(() => {
     const kmeans = new KMeans({
-      k: 2,
-      maxIter: 30,
+      k: 3,
+      maxIter: 50,
       distanceFunction: KMeans.cosineDistance,
     })
-    console.log(kmeans)
-    const dataset = tf.tensor([
-      [0.02, 0.033, 0.1],
-      [0.1, 0.2, 0.1],
-      [0.1, 0.2, 0.1],
-      [0.3, 0.21, 0.21],
-      [0.06, 0.321, 0.22],
-      [0.1, 0.3, 0.22],
-      [0.00000001, 0.01, 0.0211],
-      [0.02, 0.009, 0.0211],
-      [0.02, 0.01, 0.0211],
-      [0.02, 0.01, 0.0211],
-      [0.02, 0.01, 0.02001],
-    ])
-    const predict = kmeans.train(dataset)
+    const data1 = [
+      [1, 23, 3],
+      [1, 23, 3],
+      [4, 5, 2.1],
+      [2, 3, 1],
+      [4, 5, 2],
+      [4, 5, 2],
+      [4, 5, 2],
+      [4, 5, 2],
+      [4, 5, 2],
+      [4, 5, 2.1],
+      [4, 5, 2.1],
+      [4, 5, 2.1],
+      [4, 5, 2.1],
+    ]
+    const data2 = [
+      [-0.026, 0.0533, 0.1],
+      [0.1, 0.033, 0.032],
+      [0.12, -0.2, 0.123],
+      [0.333333, 0.21, 0.21],
+      [-0.76, -0.321, 0.228],
+      [-0.26, -0.321, 0.22],
+      [0.1, 0.3, 0.28],
+      [0.1, 0.06, 0.22],
+      [-0.00000001, 0.01, 0.0211],
+      [0.02, -0.009, -0.0211],
+      [0.12, 0.01, 0.0211],
+      [0.02, 0.01, -0.111],
+      [-0.02333, -0.043, -0.12001],
+    ]
+    const dataset = tf.tensor(data2)
+    const train = kmeans.train(dataset)
 
-    console.log('Train Classify', predict.arraySync())
+    console.log('Train Classify', train.arraySync())
     console.log('Centers', kmeans.centroids.arraySync())
     console.log('Memory Used', tf.memory())
 
@@ -47,41 +66,42 @@ function testCosineCluster() {
     const ys = kmeans.predict(
       tf.tensor([
         [0.1, 0.22, 0.21],
-        [0.02, 0.01, 0.02001],
+        [-0.02, -0.01, 0.02001],
       ]),
     )
+
     console.log('--------category index--------')
     console.log(ys.index.arraySync())
     console.log('--------category center-------')
-    ys.index.arraySync().forEach((v) => {
-      console.log(kmeans.centroids.arraySync()[v])
-    })
-    console.log('--------category confidence-------')
-    console.log(ys.confidence.arraySync())
+    console.log(ys.center.arraySync())
+    console.log('--------category ditance-------')
+    console.log(ys.distance.arraySync())
 
     // dispose
     kmeans.dispose()
-    predict.dispose()
+    train.dispose()
     dataset.dispose()
   })
 }
 
 testCosineCluster()
+
 ~~~
 
 When you are using nodejs at backend!
 
+Example takes euclideanDistance.
+
 ~~~javascript
 const KMeans = require('./tf-kmeans-node').default
 const tf = require('@tensorflow/tfjs-node')
-
 const PATH = './kmeans.json'
 
 function test() {
   tf.tidy(() => {
     const kmeans = new KMeans({
       k: 3,
-      maxIter: 10,
+      maxIter: 50,
     })
     console.log(kmeans)
     const dataset = tf.tensor([
@@ -97,12 +117,10 @@ function test() {
     console.log('Memory Used', tf.memory())
 
     console.log('Predict:')
-    console.log('Category index:')
-    kmeans.predict(tf.tensor([2, 3, 2])).index.print()
-    kmeans.predict(tf.tensor([5, 5, 4])).index.print()
-    console.log('Category confidence:')
-    kmeans.predict(tf.tensor([2, 3, 2])).confidence.print()
-    kmeans.predict(tf.tensor([5, 5, 4])).confidence.print()
+    const pre = kmeans.predict(tf.tensor([2, 3, 2]))
+    console.log('Category index:', pre.index.arraySync())
+    console.log('Category distance:', pre.distance.arraySync())
+    console.log('Category center:', pre.center.arraySync())
 
     kmeans.save(PATH)
 
@@ -113,15 +131,14 @@ function test() {
   })
 }
 function testLoad() {
+  console.log('====================Test load model=======================')
   const model = require(PATH)
   const kmeans = new KMeans(model)
-  console.log('Load Predict:')
-  console.log('Category index:')
-  kmeans.predict(tf.tensor([2, 3, 2])).index.print()
-  kmeans.predict(tf.tensor([5, 5, 4])).index.print()
-  console.log('Category confidence:')
-  kmeans.predict(tf.tensor([2, 3, 2])).confidence.print()
-  kmeans.predict(tf.tensor([5, 5, 4])).confidence.print()
+  console.log('Predict:')
+  const pre = kmeans.predict(tf.tensor([2, 3, 2]))
+  console.log('Category index:', pre.index.arraySync())
+  console.log('Category distance:', pre.distance.arraySync())
+  console.log('Category center:', pre.center.arraySync())
 }
 
 // train
@@ -138,7 +155,7 @@ testLoad()
     - k:-                Number of Clusters
     - maxIter:-          Max Iterations
     - distanceFunction:- The Distance function Used Currently: `euclideanDistance` and `cosineDistance`
-    - centroids:-        Always when loading from a save json model, you don't need to train again.
+    - centroids?:-        Always when loading from a save json model, you don't need to train again.
 
 2. ***`train`***
 
@@ -159,6 +176,7 @@ testLoad()
 5. ***`predict`***
 
     Performs Predictions on the data Provided as Input
+    Output: `{ index: category index, distance: distance to category center, center: category center }`
 
 6. ***`save`***
 

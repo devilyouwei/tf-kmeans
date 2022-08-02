@@ -1,6 +1,5 @@
 const KMeans = require('./tf-kmeans-node').default
 const tf = require('@tensorflow/tfjs-node')
-
 const PATH = './kmeans.json'
 
 function test() {
@@ -23,12 +22,10 @@ function test() {
     console.log('Memory Used', tf.memory())
 
     console.log('Predict:')
-    console.log('Category index:')
-    kmeans.predict(tf.tensor([2, 3, 2])).index.print()
-    kmeans.predict(tf.tensor([5, 5, 4])).index.print()
-    console.log('Category confidence:')
-    kmeans.predict(tf.tensor([2, 3, 2])).confidence.print()
-    kmeans.predict(tf.tensor([5, 5, 4])).confidence.print()
+    const pre = kmeans.predict(tf.tensor([2, 3, 2]))
+    console.log('Category index:', pre.index.arraySync())
+    console.log('Category distance:', pre.distance.arraySync())
+    console.log('Category center:', pre.center.arraySync())
 
     kmeans.save(PATH)
 
@@ -39,29 +36,14 @@ function test() {
   })
 }
 function testLoad() {
+  console.log('====================Test load model=======================')
   const model = require(PATH)
   const kmeans = new KMeans(model)
-  console.log('Load Predict:')
-  console.log('Category index:')
-  kmeans
-    .predict(
-      tf.tensor([
-        [2, 3, 2],
-        [1, 1, 1],
-      ]),
-    )
-    .index.print()
-  kmeans.predict(tf.tensor([5, 5, 4])).index.print()
-  console.log('Category confidence:')
-  kmeans
-    .predict(
-      tf.tensor([
-        [2, 3, 2],
-        [1, 1, 1],
-      ]),
-    )
-    .confidence.print()
-  kmeans.predict(tf.tensor([5, 5, 4])).confidence.print()
+  console.log('Predict:')
+  const pre = kmeans.predict(tf.tensor([2, 3, 2]))
+  console.log('Category index:', pre.index.arraySync())
+  console.log('Category distance:', pre.distance.arraySync())
+  console.log('Category center:', pre.center.arraySync())
 }
 
 // train
